@@ -3,6 +3,7 @@ import axios from "axios";
 import Layout from "@/components/Layout";
 import {AlertMessage} from "@/components/AlertMessage";
 import Cookies from "js-cookie";
+import Head from "next/head";
 
 type Hour = {
     Id: number;
@@ -110,6 +111,9 @@ export default function TimetablePermanent(){
 
     return(
         <Layout>
+            <Head>
+                <title>Rozvrh stálý - Bakaláři 2</title>
+            </Head>
             <div className="container mx-auto px-9">
                 <div className="bg-secondary shadow-[1px_1px_10px_#00000033] rounded-xl mt-9">
                     <div className="p-6 text-slate-800 overflow-x-auto">
