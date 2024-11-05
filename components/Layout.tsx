@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import {Dropdown,DropdownTrigger,DropdownMenu,DropdownSection,DropdownItem} from "@nextui-org/dropdown";
+import {Dropdown,DropdownTrigger,DropdownMenu,DropdownItem} from "@nextui-org/dropdown";
 import {Button} from "@nextui-org/button";
 
 class MenuLink{
@@ -70,7 +70,7 @@ export default function Layout({children}:{children:React.ReactNode}){
 
     const menu = [
         new MenuLink("DashBoard","/dashboard"),
-        new MenuLink("Týdenní rozvrh","/dashboard/rozvrh/tydenni"),
+        //new MenuLink("Týdenní rozvrh","/dashboard/rozvrh/tydenni"),
         new MenuLink("Stálý rozvrh","/dashboard/rozvrh/staly"),
     ];
     

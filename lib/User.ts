@@ -21,7 +21,7 @@ export default function useUser(){
   const [userLoading, setUserLoading] = useState(false);
   let invalidation = Date.now();
 
-  const fetchUser = async () => {
+  async function fetchUser(){
     const requestTime = Date.now();
     const token = Api.getToken();
   
@@ -31,33 +31,42 @@ export default function useUser(){
     }
   
     setUserLoading(true);
-    const res = await axios.get("https://bakalari.uhlarka.cz/api/3/user", {
-      headers: {
-        "Authorization": `Bearer ${Api.getToken()}`
+
+    try{
+      const res = await axios.get("https://bakalari.uhlarka.cz/api/3/user",{
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+      });
+
+      if(requestTime < invalidation){
+        setUserLoading(false);
+        return;
       }
-    });
-  
-    if(requestTime < invalidation){
+
       setUserLoading(false);
-      return;
+
+      if(res.status === 200){
+        setUser(res.data);
+      }else{
+        logout();
+      }
+    }catch(e){
+        setUserLoading(false);
+        if(e){
+          logout();
+        }else{
+          AlertMessage("error", "Něco se pokazilo při načítání uživatele...");
+        }
     }
-  
-    setUserLoading(false);
-  
-    if(res.status !== 200){
-      setUser(undefined);
-      AlertMessage("error","Nepodařilo se načíst uživatele...");
-      return;
-    }
-  
-    setUser(res.data);
   }
 
-  const logout = () => {
+  function logout(){
     invalidation = Date.now();
     Cookies.remove("auth_token");
     setUser(undefined);
-    new URL("/login", window.location.origin);
+    const url = new URL("/login", window.location.origin);
+    window.location.href = url.toString();
     AlertMessage("success","Byl(a) jste odhlášen(a).");
   }
 
@@ -67,5 +76,5 @@ export default function useUser(){
     }
   },[]);
 
-  return {user,setUser,userLoading,fetchUser,logout}
+  return{user,setUser,userLoading,fetchUser,logout}
 }
